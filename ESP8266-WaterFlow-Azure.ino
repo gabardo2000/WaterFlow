@@ -55,7 +55,7 @@ void setup() {
   connect_client(SCOPE_ID, DEVICE_ID, DEVICE_KEY);
 
   if (context != NULL) {
-    lastTick = 0;  // set timer in the past to enable first telemetry a.s.a.p
+    lastTick = 0;  
   }
 }
 
@@ -64,25 +64,25 @@ void loop() {
   delay (1000);
   countOfSeconds++;
 
-  flow = numberOfInterrupts / 5.5; //Converte para L/min sensor de 3/4 polegada
-  average=average+flow; //Soma a vazão para o calculo da media
-  Serial.print(flow); //Imprime na serial o valor da vazão
-  Serial.print(" L/min - "); //Imprime L/min
-  Serial.print(countOfSeconds); //Imprime a contagem i (segundos)
-  Serial.println("s"); //Imprime s indicando que está em segundos
+  flow = numberOfInterrupts / 5.5; 
+  average=average+flow; 
+  Serial.print(flow); 
+  Serial.print(" L/min - "); 
+  Serial.print(countOfSeconds); 
+  Serial.println("s"); 
 
   numberOfInterrupts=0;
   
   if (isConnected) {
-    if (countOfSeconds==60) {  // send telemetry every 60 seconds
+    if (countOfSeconds==60) {  
       countOfSeconds=0;
       char msg[64] = {0};
       int pos = 0, errorCode = 0;
 
-      average = average/60; // Tira a media dividindo por 60
-      Serial.print("\nMedia por minuto = "); //Imprime a frase Media por minuto =
-      Serial.print(average); //Imprime o valor da media
-      Serial.println(" L/min - "); //Imprime L/min
+      average = average/60; 
+      Serial.print("\nMedia por minuto = "); 
+      Serial.print(average); 
+      Serial.println(" L/min - "); 
       pos = snprintf(msg, sizeof(msg) - 1, "{\"Flow\": %d}", int(average));
       errorCode = iotc_send_telemetry(context, msg, pos);
       msg[pos] = 0;
@@ -93,7 +93,7 @@ void loop() {
       }
     }
 
-    iotc_do_work(context);  // do background work for iotc
+    iotc_do_work(context);  
   } else {
     iotc_free_context(context);
     context = NULL;
