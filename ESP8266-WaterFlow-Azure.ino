@@ -1,11 +1,13 @@
+/* Required libraries */
 #include <ESP8266WiFi.h>
 #include "src/iotc/common/string_buffer.h"
 #include "src/iotc/iotc.h"
 
+/* Wifi Central Config  - NEEDS UPDATE HERE */
 #define WIFI_SSID "xxxxxxxxx"
 #define WIFI_PASSWORD "xxxxxxxxx"
 
-/* Azure IoT Central Config */
+/* Azure IoT Central Config - NEEDS UPDATE HERE  */
 const char* SCOPE_ID = "xxxxxxxxx";
 const char* DEVICE_ID = "xxxxxxxxx";
 const char* DEVICE_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
