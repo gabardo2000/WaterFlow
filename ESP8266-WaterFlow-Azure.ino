@@ -18,7 +18,7 @@ int numberOfInterrupts = 0;
 int countOfSeconds = 0;
 float flow = 0; 
 float average = 0; 
-void ICACHE_RAM_ATTR handleInterrupt();
+void ICACHE_RAM_ATTR handleInterrupt();  // See https://stackoverflow.com/questions/58113937/esp8266-arduino-why-is-it-necessary-to-add-the-icache-ram-attr-macro-to-isrs-an
 
 void on_event(IOTContext ctx, IOTCallbackInfo* callbackInfo);
 #include "src/connection.h"
@@ -66,7 +66,7 @@ void loop() {
   delay (1000);
   countOfSeconds++;
 
-  flow = numberOfInterrupts / 5.5; 
+  flow = numberOfInterrupts / 5.5; //Conversion to L/min for 3/4in flow sensor
   average=average+flow; 
   Serial.print(flow); 
   Serial.print(" L/min - "); 
@@ -81,10 +81,11 @@ void loop() {
       char msg[64] = {0};
       int pos = 0, errorCode = 0;
 
-      average = average/60; 
-      Serial.print("\nMedia por minuto = "); 
-      Serial.print(average); 
-      Serial.println(" L/min - "); 
+      average = average/60; // Average in Liters per minute
+      average = average * 1000; // Converting from Liters to mili Liters to keep precision during Int convertion at line 89
+      Serial.print("\nAverage per minute = "); 
+      Serial.print(average); //Print average to serial in mL
+      Serial.println(" mL/min - "); 
       pos = snprintf(msg, sizeof(msg) - 1, "{\"Flow\": %d}", int(average));
       errorCode = iotc_send_telemetry(context, msg, pos);
       msg[pos] = 0;
